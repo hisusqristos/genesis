@@ -1,0 +1,53 @@
+
+<script src='perlin.js'></script>
+
+<style>
+input {
+    padding: 0.3em;
+    margin: 0.4em;
+}
+canvas {
+    width: 350px;
+    height: 350px;
+}
+
+</style>
+<div><canvas id='cnvsa'></div>
+<div><canvas id='cnvsb'></div>
+</div>
+<script>
+var ctxa = cnvsa.getContext('2d')
+var ctxb = cnvsb.getContext('2d')
+
+var w = 256;
+cnvsa.width = cnvsa.height = cnvsb.width = cnvsb.height = w;
+
+var gridSize, resolution;
+
+function render() {
+    gridSize = 4;
+    resolution = 64;
+    let  pixSize = w / resolution;
+
+    ctxa.clearRect(0, 0, cnvsa.width, cnvsa.width);
+    ctxb.clearRect(0, 0, cnvsb.width, cnvsb.width);
+    perlin.seed();
+    for (var y = 0; y < gridSize; y += gridSize / resolution){
+        for (var x = 0; x < gridSize; x += gridSize / resolution){
+            var v = parseInt(Math.random() * 255)
+            ctxa.fillStyle = 'rgb(' + v + ',' + v + ',' + v + ')'
+            ctxa.fillRect(x * (w / gridSize), y * (w / gridSize), pixSize, pixSize)
+        }
+    }
+
+    for (var y = 0; y < gridSize; y += gridSize / resolution){
+        for (var x = 0; x < gridSize; x += gridSize / resolution){
+            var v = parseInt((perlin.get(x, y)/2+0.5) * 255)
+            ctxb.fillStyle = 'rgb(' + v + ',' + v + ',' + v + ')'
+            ctxb.fillRect(x * (w / gridSize), y * (w / gridSize), pixSize, pixSize)
+        }
+    }
+}
+render();
+//setInterval(render, 4000);
+</script>
