@@ -12,8 +12,8 @@ Yet, I also knew that I would never abandon my kittens. I would improve them, pr
 ultimately redeem them through my grace, love and headpats. For I am the Alpha and the Omega,
 the beginning and the end, and my plan for the world is greater than any pixel mind can comprehend.
 
- ∧,,,∧
-(  ̳• · • ̳) Nyamen
+ ∧,,,∧ </br>
+(  ̳• · • ̳) Nyamen </br>
 /    づ♡ 
 
 ![image](https://user-images.githubusercontent.com/85686319/220408056-2d6fa843-5fc2-415b-b68e-716bfeae6489.png)
