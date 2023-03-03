@@ -1,57 +1,70 @@
-// the map doesnt look mappish enough. Its too clumsy and has, lets say, tiny islands.
-// currently exploring algorithms which seem to be able to cure my world.
-
-const canvas = document.getElementById("cnvs");
-const ctx = canvas.getContext("2d");
-
-canvas.width = 600;
-canvas.height = 500;
-
-// set up the tile size and number of columns and rows
 const tileSize = 16;
-const numCols = Math.floor(canvas.width / tileSize);
-const numRows = Math.floor(canvas.height / tileSize);
+const noiseScale = 0.1;
 
-let tileMap = [];
+const colors = [
+  "#5E6073", //flower
+  "#A0D995", //grass
+  "#F5F0BB", //sand
+  "#73A9AD", //water
+];
+// 20% flowers in 40% grass in 50% sand in 100% water
+let proportions = [0.2, 0.4, 0.5, 1];
 
-// set up hex values for colors
-const colors = {
-  grass: "#A0D995",
-  water: "#4CACBC",
-  flower: "#A3A7E4",
-  cat: "",
-  sand: "",
-};
+var x = 0;
+var y = 0;
+var cols = 0;
+var rows = 0;
+var xRO = 0;
+var yRO = 0;
+var xTO = 0;
+var yTO = 0;
 
-// loop through each tile and randomly assign a tile type
-for (let row = 0; row < numRows; row++) {
-  tileMap[row] = [];
-  for (let col = 0; col < numCols; col++) {
-    const tilePercentage = Math.floor(Math.random() * 100);
-    tileMap[row][col] = tilePercentage;
+const tiles = [];
+
+function setup() {
+  createCanvas(1080, 720);
+  cols = width / tileSize;
+  rows = height / tileSize;
+
+  noStroke();
+  drawTerrain();
+}
+
+function drawTerrain() {
+  xRO = x % tileSize;
+  yRO = y % tileSize;
+  xTO = parseInt(x / tileSize);
+  yTO = parseInt(y / tileSize);
+  for (let col = 0; col < cols; col++) {
+    for (let row = 0; row < rows; row++) {
+      tiles[col + row * cols] = getTile(col, row);
+    }
+  }
+
+  for (let col = 0; col < cols; col++) {
+    for (let row = 0; row < rows; row++) {
+      fill(tiles[col + row * cols]);
+      rect(
+        (col / 2) * tileSize - xRO,
+        (row / 2) * tileSize - yRO,
+        tileSize,
+        tileSize
+      );
+    }
   }
 }
 
-// draw
-// every time i write an ifelse block a hamster dies
-for (let row = 0; row < numRows; row++) {
-  for (let col = 0; col < numCols; col++) {
-    const tileType = tileMap[row][col];
-    let color;
-    if (tileType > 20) {
-      // 30% grass probability
-      let ItemInGrass = Math.floor(Math.random() * 100);
-      // 10% flower probability in 30% grass
-      if (ItemInGrass < 12) {
-        color = colors.flower; // purple for flowers
-      } else {
-        color = colors.grass; // green for grass
-      }
-    } else {
-      color = colors.water; // blue for water
+function getTile(x, y, terrainScales) {
+  let v = noise((xTO + x) * noiseScale, (yTO + y) * noiseScale);
+  for (let i = 0; i < proportions.length; i++) {
+    let terrainScale = proportions[i];
+    if (v <= terrainScale) {
+      return colors[i];
     }
-
-    ctx.fillStyle = color;
-    ctx.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
   }
+}
+
+function draw() {
+  clear();
+  drawTerrain();
 }
