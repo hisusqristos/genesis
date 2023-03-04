@@ -2,7 +2,9 @@ const tileSize = 16;
 const noiseScale = 0.1;
 
 const colors = {
-  flower: "#DF2E38", //flower
+  flower: "#E96479", //flower
+  tree: "#698269",
+  mud: "#B99B6B",
   grass: "#A0D995", //grass
   sand: "#F5F0BB", //sand
   water: "#73A9AD", //water
@@ -10,6 +12,7 @@ const colors = {
 // 20% flowers in 40% grass in 50% sand in 100% water
 let proportions = {
   grass: 0.4,
+  forest: 0.47,
   sand: 0.5,
   water: 1,
 };
@@ -78,6 +81,14 @@ function pickColor(proportion) {
         color = colors.flower;
       } else {
         color = colors.grass;
+      }
+      break;
+    case proportions.forest:
+      let rand2 = random(100);
+      if (rand2 < 30) {
+        color = colors.tree;
+      } else {
+        color = colors.mud;
       }
       break;
     case proportions.sand:
