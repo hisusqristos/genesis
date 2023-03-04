@@ -1,14 +1,19 @@
 const tileSize = 16;
 const noiseScale = 0.1;
 
-const colors = [
-  "#5E6073", //flower
-  "#A0D995", //grass
-  "#F5F0BB", //sand
-  "#73A9AD", //water
-];
+const colors = {
+  flower: "#5E6073", //flower
+  grass: "#A0D995", //grass
+  sand: "#F5F0BB", //sand
+  water: "#73A9AD", //water
+};
 // 20% flowers in 40% grass in 50% sand in 100% water
-let proportions = [0.2, 0.4, 0.5, 1];
+let proportions = {
+  flower: 0.2,
+  grass: 0.4,
+  sand: 0.5,
+  water: 1,
+};
 
 var x = 0;
 var y = 0;
@@ -53,15 +58,34 @@ function drawTerrain() {
     }
   }
 }
-
-function getTile(x, y, terrainScales) {
+function getTile(x, y) {
   let v = noise((xTO + x) * noiseScale, (yTO + y) * noiseScale);
-  for (let i = 0; i < proportions.length; i++) {
-    let terrainScale = proportions[i];
-    if (v <= terrainScale) {
-      return colors[i];
+  for (let proportionKey in proportions) {
+    let proportion = proportions[proportionKey]; //proportions.valueOf(proportion);
+    if (v <= proportion) {
+      const color = pickColor(proportion);
+      return color;
     }
   }
+}
+
+function pickColor(proportion) {
+  let color = "#FF0000"; // let default be red, so we recognize the error
+  switch (proportion) {
+    case proportions.flower:
+      color = colors.flower;
+      break;
+    case proportions.grass:
+      color = colors.grass;
+      break;
+    case proportions.sand:
+      color = colors.sand;
+      break;
+    case proportions.water:
+      color = colors.water;
+      break;
+  }
+  return color;
 }
 
 function draw() {
