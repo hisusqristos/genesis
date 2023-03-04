@@ -2,14 +2,13 @@ const tileSize = 16;
 const noiseScale = 0.1;
 
 const colors = {
-  flower: "#5E6073", //flower
+  flower: "#DF2E38", //flower
   grass: "#A0D995", //grass
   sand: "#F5F0BB", //sand
   water: "#73A9AD", //water
 };
 // 20% flowers in 40% grass in 50% sand in 100% water
 let proportions = {
-  flower: 0.2,
   grass: 0.4,
   sand: 0.5,
   water: 1,
@@ -72,11 +71,14 @@ function getTile(x, y) {
 function pickColor(proportion) {
   let color = "#FF0000"; // let default be red, so we recognize the error
   switch (proportion) {
-    case proportions.flower:
-      color = colors.flower;
-      break;
     case proportions.grass:
-      color = colors.grass;
+      let rand = random(100);
+      if (rand < 3) {
+        // 3% flower probability
+        color = colors.flower;
+      } else {
+        color = colors.grass;
+      }
       break;
     case proportions.sand:
       color = colors.sand;
@@ -91,4 +93,5 @@ function pickColor(proportion) {
 function draw() {
   clear();
   drawTerrain();
+  noLoop();
 }
