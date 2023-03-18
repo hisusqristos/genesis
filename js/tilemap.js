@@ -1,5 +1,6 @@
-const tileSize = 16;
+const tileSize = 8;
 const noiseScale = 0.1;
+const buffer = 1;
 
 const colors = {
   flower: "#E96479", //flower
@@ -9,7 +10,7 @@ const colors = {
   sand: "#F5F0BB", //sand
   water: "#73A9AD", //water
 };
-// 20% flowers in 40% grass in 50% sand in 100% water
+
 let proportions = {
   grass: 0.4,
   forest: 0.47,
@@ -29,9 +30,9 @@ var yTO = 0;
 const tiles = [];
 
 function setup() {
-  createCanvas(1080, 720);
-  cols = width / tileSize;
-  rows = height / tileSize;
+  createCanvas(400, 400);
+  cols = width / tileSize + buffer;
+  rows = height / tileSize + buffer;
 
   noStroke();
   drawTerrain();
@@ -52,8 +53,8 @@ function drawTerrain() {
     for (let row = 0; row < rows; row++) {
       fill(tiles[col + row * cols]);
       rect(
-        (col / 2) * tileSize - xRO,
-        (row / 2) * tileSize - yRO,
+        (col - buffer / 2) * tileSize - xRO,
+        (row - buffer / 2) * tileSize - yRO,
         tileSize,
         tileSize
       );
@@ -63,7 +64,7 @@ function drawTerrain() {
 function getTile(x, y) {
   let v = noise((xTO + x) * noiseScale, (yTO + y) * noiseScale);
   for (let proportionKey in proportions) {
-    let proportion = proportions[proportionKey]; //proportions.valueOf(proportion);
+    let proportion = proportions[proportionKey];
     if (v <= proportion) {
       const color = pickColor(proportion);
       return color;
@@ -104,5 +105,10 @@ function pickColor(proportion) {
 function draw() {
   clear();
   drawTerrain();
+  updateMap();
   noLoop();
+  // i want to move the map by pressing keys
+  // but this noLoop() function, which was put to avoid running flowers
+  // disables moving map.
+  // TODO: solve.
 }
