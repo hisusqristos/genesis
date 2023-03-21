@@ -2,13 +2,21 @@ const tileSize = 8;
 const noiseScale = 0.1;
 const buffer = 1;
 
+let walker;
+let walkerX, walkerY;
+
+function preload() {
+  walker = loadImage("../images/milashka.png");
+  // walker = walker.resize(40, 40);
+}
+
 const colors = {
-  flower: "#E96479", //flower
+  flower: "#E96479",
   tree: "#698269",
   mud: "#B99B6B",
-  grass: "#A0D995", //grass
-  sand: "#F5F0BB", //sand
-  water: "#73A9AD", //water
+  grass: "#A0D995",
+  sand: "#F5F0BB",
+  water: "#73A9AD",
 };
 
 let proportions = {
@@ -30,7 +38,7 @@ var yTO = 0;
 const tiles = [];
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(windowWidth, windowHeight);
   cols = width / tileSize + buffer;
   rows = height / tileSize + buffer;
 
@@ -61,6 +69,7 @@ function drawTerrain() {
     }
   }
 }
+
 function getTile(x, y) {
   let v = noise((xTO + x) * noiseScale, (yTO + y) * noiseScale);
   for (let proportionKey in proportions) {
@@ -102,13 +111,9 @@ function pickColor(proportion) {
   return color;
 }
 
-function draw() {
+async function draw() {
   clear();
-  drawTerrain();
-  updateMap();
   noLoop();
-  // i want to move the map by pressing keys
-  // but this noLoop() function, which was put to avoid running flowers
-  // disables moving map.
-  // TODO: solve.
+  await drawTerrain();
+  image(walker, 0, 0);
 }
