@@ -1,21 +1,17 @@
 let changeSpeed = 20;
 
 function checkKey(key) {
-  if (key == " ") {
-    noiseSeed(millis());
-    drawTerrain();
-  }
   if (key === "w") {
-    y -= changeSpeed;
+    walkerY -= changeSpeed;
   }
   if (key === "s") {
-    y += changeSpeed;
+    walkerY += changeSpeed;
   }
   if (key === "a") {
-    x -= changeSpeed;
+    walkerX -= changeSpeed;
   }
   if (key === "d") {
-    x += changeSpeed;
+    walkerX += changeSpeed;
   }
 }
 
@@ -23,4 +19,10 @@ function updateMap() {
   if (keyIsPressed) {
     checkKey(key);
   }
+}
+
+function moveWalker() {
+  image(walker, walkerX, walkerY); //walkerX, walkerY);
+  updateMap();
+  console.log(walkerX, walkerY);
 }
