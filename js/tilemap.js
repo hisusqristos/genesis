@@ -3,7 +3,8 @@ const noiseScale = 0.1;
 const buffer = 1;
 
 let walker;
-let walkerX, walkerY;
+let walkerX = 0;
+let walkerY = 0;
 
 function preload() {
   walker = loadImage("../images/milashka.png");
@@ -113,7 +114,7 @@ function pickColor(proportion) {
 
 async function draw() {
   clear();
-  noLoop();
+  // noLoop();
   await drawTerrain();
-  image(walker, 0, 0);
+  moveWalker();
 }
